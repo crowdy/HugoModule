@@ -25,10 +25,12 @@ Function New-ModuleFile {
     code $($MoudleName).psm1
 }
 
+function Edit-dtc2admintool {
+    $path = "$env:userprofile\Documents\WindowsPowerShell\Modules\dtc2admintool"
+    code "$path"
+}
+
 function Edit-HugoModule {
-<#
-.Logic
-#>
     $path = "$env:userprofile\Documents\WindowsPowerShell\Modules\HugoModule"
     code "$path\HugoModule.psm1"
 }
@@ -82,6 +84,6 @@ function New-HugoPost {
     if (! $title.EndsWith(".md")) {
         $title += ".md"
     }
-    Write-Debug "hugo new -c ./content/ko $title"
-    hugo new $title
+    Write-Debug "hugo new ./content/ko/$title"
+    hugo new ./content/ko/$title
 }
