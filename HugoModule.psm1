@@ -35,14 +35,7 @@ function Edit-HugoModule {
     code "$path\HugoModule.psm1"
 }
 
-function New-HugoPost {
-<#
-.Logic
-  - base path는 $env:userprofile
-  - SiteName이 없으면 디폴트로 blog
-  - prefix를 자동으로 달게 할 것.
-  - prefix를 제외하고 타이틀이 같은 파일이 있으면 그 파일을 열 것.
-#>
+Function New-HugoPost {
     [CmdletBinding()]
     param(
         [Parameter(ValueFromPipeline)]
@@ -86,4 +79,97 @@ function New-HugoPost {
     }
     Write-Debug "hugo new ./content/ko/$title"
     hugo new ./content/ko/$title
+}
+
+
+Function Get-HugoPost {
+    [CmdletBinding()]
+    param(
+        [string] $SiteName = 'blog'
+    )
+
+    Set-Location $env:userprofile\$SiteName\content\ko
+
+    $files = Get-ChildItem -Path $env:userprofile\$SiteName\content\ko -Include *.md -Recurse
+    
+    # $files.Count
+    # $files | ft -Property DirectoryName, Name
+    
+    $posts = [System.Collections.ArrayList]@()
+    
+    Foreach($f in $files) {
+
+        if ($f.Name.StartsWith('_')) {
+            Continue
+        }
+    
+        $post = @{}
+        $post['DirectoryName'] = $f.DirectoryName
+        $post['Name'] = $f.Name
+    
+        $content = Get-Content $f -Encoding UTF8
+        $frontmatter = ""
+        $delimeter = $content[0]
+        if ($delimeter -notin @("---", "+++")) {
+            Write-Host "no delimeter found."
+            Write-Host $post.Name
+            Continue
+        }
+    
+        $index = 1
+        $IN_FONTMATTER = $true
+    
+        $frontmatter = ""
+        $post['Content'] = ""
+        While($index -lt $content.Length) {
+            $line = $content[$index]
+    
+            if ($IN_FONTMATTER) {
+                $frontmatter += $line + "`n"
+            } else {
+                $post['Content'] += $line + "`n"
+            }
+            
+            if ($line -eq $delimeter) {
+                # add frontmatter
+                $IN_FONTMATTER = $false
+                try {
+                    $post['FrontMatter'] = (ConvertFrom-Yaml $frontmatter)
+                } catch {
+                    Write-Host $_
+                    Write-Host $post.DirectoryName
+                    Write-Host $post.Name
+                    Write-Host $frontmatter
+                }
+            }
+            $index++
+        }
+    
+        [void]$posts.Add($post)
+    }
+    
+    return $posts
+}
+
+
+Function Show-HugoReport {
+
+    $posts = get-hugopost
+    $report = [System.Collections.ArrayList]@()
+    foreach ($p in $posts) {
+        $total_line += $p.Content.Split("`n").Count
+        $r = [PSCustomObject]@{
+            Date = $p.FrontMatter.Date
+            LineCount = $p.Content.Split("`n").Count
+            CharCount = $p.Content.ToCharArray().Count
+            FileCode = $p.Name.SubString(0, 4)
+            Draft = $p.FrontMatter.Draft
+        }
+        [void]$report.Add($r)
+    }
+    $report |where {[char]::IsDigit($_.FileCode.SubString(1,1))} | sort -Property LineCount -Descending | ft
+
+    Write-Host -ForegroundColor Red "objective: 1000 chars"
+    Write-Host -ForegroundColor Red "objective: 3 published posts per a day"
+    Write-Host -ForegroundColor Red "objective: 40 mins per a post"
 }
