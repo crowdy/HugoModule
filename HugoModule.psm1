@@ -67,7 +67,7 @@ Function New-HugoPost {
         if ($title.StartsWith("hyper-v")) {
             $prefix_char = "c"
         } else {
-            $prefix_char = $title[0]
+            $prefix_char = [Char]::ToLower($title[0])
         }
 
         Write-Debug $prefix_num
@@ -152,7 +152,17 @@ Function Get-HugoPost {
 }
 
 
-Function Show-HugoReport {
+Function Get-HugoReport {
+    [CmdletBinding()]
+    param(
+        [switch] $DraftOnly,
+        [switch] $PublishedOnly,
+        [switch] $Ascending
+    )
+
+    Write-Host -ForegroundColor Red "objective: 1000 chars"
+    Write-Host -ForegroundColor Red "objective: 3 published posts per a day"
+    Write-Host -ForegroundColor Red "objective: 40 mins per a post"
 
     $posts = get-hugopost
     $report = [System.Collections.ArrayList]@()
@@ -167,9 +177,50 @@ Function Show-HugoReport {
         }
         [void]$report.Add($r)
     }
-    $report |where {[char]::IsDigit($_.FileCode.SubString(1,1))} | sort -Property LineCount -Descending | ft
 
-    Write-Host -ForegroundColor Red "objective: 1000 chars"
-    Write-Host -ForegroundColor Red "objective: 3 published posts per a day"
-    Write-Host -ForegroundColor Red "objective: 40 mins per a post"
+    $report = $report | Where-Object {[char]::IsDigit($_.FileCode.SubString(1,1))}
+    if ($DraftOnly) {
+        $report = $report | Where-Object {$_.Draft}
+    } elseif ($PublishedOnly) {
+        $report = $report | Where-Object {! $_.Draft}
+    }
+
+    if ($Ascending) {
+        $report = $report | Sort-Object -Property LineCount
+    }
+    else  {
+        $report = $report | Sort-Object -Property LineCount -Descending
+    }
+
+    return $report
 }
+
+
+Function Invoke-Repeatedly {
+    [CmdletBinding()]
+    Param(
+        [int] $Second = 5 * 60,
+        $ScriptBlock,
+        $ArgumentList
+    )
+
+    While($True) {
+        Get-Date
+        & $ScriptBlock -ArgumentList $ArgumentList
+        Start-Sleep -s $Second
+    }
+}
+
+function lsltr { Get-ChildItem | Sort-Object LastAccessTime | Format-Table }
+Set-Alias -Name watch Invoke-Repeatedly
+
+<#
+
+$res = Get-hugoreport
+$res | where {$_.FileCode -like "p*"} | ft
+$res | where {$_.FileCode.StartsWith("p")} | ft
+$res | where {$_.FileCode.StartsWith("p")} | sort -property draft | ft
+$res | where {$_.FileCode.StartsWith("p") -And (! $_.Draft)} | ft
+
+$res | where {$_.FileCode.StartsWith("v") -And (! $_.Draft)} | ft
+#>
