@@ -1,5 +1,9 @@
 <#
-remove-module HugoModule; import-module HugoModule
+## Installation
+$targetpath = "$env:userprofile\Documents\WindowsPowerShell\Modules\HugoModule"
+if (! (test-path $targetpath)) { mkdir $targetpath -force }
+copy C:\Users\usr0100023\blog\projects\hugomodule\HugoModule.psm1 $targetpath
+dir $targetpath
 #>
 Function Edit-GitConfigure {
     code "$env:userprofile\.gitconfig"
@@ -23,11 +27,6 @@ Function New-ModuleFile {
     touch $($MoudleName).psm1
     git init
     code $($MoudleName).psm1
-}
-
-function Edit-dtc2admintool {
-    $path = "$env:userprofile\Documents\WindowsPowerShell\Modules\dtc2admintool"
-    code "$path"
 }
 
 function Edit-HugoModule {
@@ -227,49 +226,49 @@ $res | where {$_.FileCode.StartsWith("v") -And (! $_.Draft)} | ft
 
 function hvd {
     Write-Host "Hugo VSCode Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("v") -And ($_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("v") -And ($_.Draft)} | Format-Table
 }
 
 function hvnd {
     Write-Host "Hugo VSCode Not Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("v") -And (! $_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("v") -And (! $_.Draft)} | fFormat-Tablet
 }
 
 function hhd {
     Write-Host "Hugo Hugo Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("h") -And ($_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("h") -And ($_.Draft)} | Format-Table
 }
 
 function hhnd {
     Write-Host "Hugo Hugo Not Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("h") -And (! $_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("h") -And (! $_.Draft)} | Format-Table
 }
 
 function hpd {
     Write-Host "Hugo Powershell Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("p") -And ($_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("p") -And ($_.Draft)} | Format-Table
 }
 
 function hpnd {
     Write-Host "Hugo Powershell Not Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("p") -And (! $_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("p") -And (! $_.Draft)} | Format-Table
 }
 
 function hdd {
     Write-Host "Hugo DevNote Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("d") -And ($_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("d") -And ($_.Draft)} | Format-Table
 }
 
 function hdnd {
     Write-Host "Hugo DevNote Not Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("d") -And (! $_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("d") -And (! $_.Draft)} | Format-Table
 }
 
 function hcd {
     Write-Host "Hugo Code Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | Format-Table
 }
 function hcnd {
     Write-Host "Hugo Code Not Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | Format-Table
 }
