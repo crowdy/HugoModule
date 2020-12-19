@@ -2,7 +2,7 @@
 ## Installation
 $targetpath = "$env:userprofile\Documents\WindowsPowerShell\Modules\HugoModule"
 if (! (test-path $targetpath)) { mkdir $targetpath -force }
-copy C:\Users\usr0100023\blog\projects\hugomodule\HugoModule.psm1 $targetpath
+copy C:\Users\usr0100023\blog\projects\HugoModule\HugoModule.psm1 $targetpath
 dir $targetpath
 #>
 Function Edit-GitConfigure {
@@ -49,27 +49,42 @@ Function New-HugoPost {
         $path, $filename = ($title[0..$index] -join ""), ($title[$($index+1)..$($title.length-1)] -join "")
         Write-Debug $path
 
-        $file = Get-ChildItem "content/ko/$path" -Filter "???? *$filename.md"
+        $file = Get-ChildItem "content/ko/$path" -Filter "*$filename.md"
         if ($file) {
             Write-Debug $file
             code $file.FullName
             return
         }
 
-        $files = get-childitem "content/ko/$path" -Filter "???? *"
+        $files = get-childitem "content/ko/$path" | Where-Object { !( $_ | Select-String "dashboard" -quiet) }
         if ($files) {
-            $prefix_num = [int](($files.Name | Select-Object -last 1)[1..3] -join "") + 1
+            $prefix_word = ($files.Name | Select-Object -last 1).Split(" ")[0]
+            $prefix_num = [int]($prefix_word.Substring($prefix_word.Length - 2)) + 1
         } else {
             $prefix_num = 1
         }
 
+        Write-Host "title : $title"
+
         if ($title.StartsWith("hyper-v")) {
-            $prefix_char = "c"
+            $prefix_char = "hyperv"
+        } elseif ($title.StartsWith("bow")) { 
+            $prefix_char = "bow"
+        } elseif ($title.StartsWith("carme")) { 
+            $prefix_char = "carme"
+        } elseif ($title.StartsWith("conoha")) { 
+            $prefix_char = "conoha"
+        } elseif ($title.StartsWith("dc2")) { 
+            $prefix_char = "dc2"
+        } elseif ($title.StartsWith("gmo")) { 
+            $prefix_char = "gmo"
+        } elseif ($title.StartsWith("kvm")) { 
+            $prefix_char = "kvm"
         } else {
             $prefix_char = [Char]::ToLower($title[0])
         }
 
-        Write-Debug $prefix_num
+        Write-Debug "prefix num is $prefix_num"
         $title = "$path$($prefix_char){0:d3} $filename" -f $prefix_num
     }
 
@@ -264,11 +279,11 @@ function hdnd {
     get-hugoreport | Where-Object {$_.FileCode.StartsWith("d") -And (! $_.Draft)} | Format-Table
 }
 
-function hcd {
-    Write-Host "Hugo Code Draft"
-    get-hugoreport | Where-Object {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | Format-Table
-}
-function hcnd {
-    Write-Host "Hugo Code Not Draft"
-    get-hugoreport | Where-Object {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | Format-Table
-}
+ function hcd {
+     Write-Host "Hugo Code Draft"
+     get-hugoreport | Where-Object {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | Format-Table
+ }
+ function hcnd {
+     Write-Host "Hugo Code Not Draft"
+     get-hugoreport | Where-Object {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | Format-Table
+ }
