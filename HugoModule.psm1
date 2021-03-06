@@ -117,7 +117,7 @@ Function Get-HugoPost {
 
     $path = "$env:userprofile\$SiteName\content\ko"
     if ($IsMacOS) {
-        $env:HOME/$SiteName/content/ko
+        $path = "$env:HOME/$SiteName/content/ko"
     }
 
     $files = Get-ChildItem -Path $path -Include *.md -Recurse
