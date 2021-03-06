@@ -43,7 +43,7 @@ Function New-HugoPost {
         [string] $SiteName = 'blog'
     )
 
-    Set-Location $env:userprofile\$SiteName
+    Set-Location Join-Path -path $env:userprofile -chilepath $SiteName
 
     if ($title.Contains("/")) {
         $index = $title.IndexOf('/')
@@ -227,49 +227,49 @@ $res | where {$_.FileCode.StartsWith("v") -And (! $_.Draft)} | ft
 
 function hvd {
     Write-Host "Hugo VSCode Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("v") -And ($_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("v") -And ($_.Draft)} | ft
 }
 
 function hvnd {
     Write-Host "Hugo VSCode Not Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("v") -And (! $_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("v") -And (! $_.Draft)} | ft
 }
 
 function hhd {
     Write-Host "Hugo Hugo Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("h") -And ($_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("h") -And ($_.Draft)} | ft
 }
 
 function hhnd {
     Write-Host "Hugo Hugo Not Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("h") -And (! $_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("h") -And (! $_.Draft)} | ft
 }
 
 function hpd {
     Write-Host "Hugo Powershell Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("p") -And ($_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("p") -And ($_.Draft)} | ft
 }
 
 function hpnd {
     Write-Host "Hugo Powershell Not Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("p") -And (! $_.Draft)} | ft
+    get-hugoreport | wheWhere-Objectre {$_.FileCode.StartsWith("p") -And (! $_.Draft)} | ft
 }
 
 function hdd {
     Write-Host "Hugo DevNote Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("d") -And ($_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("d") -And ($_.Draft)} | ft
 }
 
 function hdnd {
     Write-Host "Hugo DevNote Not Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("d") -And (! $_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("d") -And (! $_.Draft)} | ft
 }
 
 function hcd {
     Write-Host "Hugo Code Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | ft
 }
 function hcnd {
     Write-Host "Hugo Code Not Draft"
-    get-hugoreport | where {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | ft
+    get-hugoreport | Where-Object {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | ft
 }
