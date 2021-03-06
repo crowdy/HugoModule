@@ -241,82 +241,41 @@ $res | where {$_.FileCode.StartsWith("v") -And (! $_.Draft)} | ft
 
 function hvd {
     Write-Host "Hugo VSCode Draft"
-<<<<<<< HEAD
-    get-hugoreport | Where-Object {$_.FileCode.StartsWith("v") -And ($_.Draft)} | ft
-=======
     get-hugoreport | Where-Object {$_.FileCode.StartsWith("v") -And ($_.Draft)} | Format-Table
->>>>>>> c7c514f79162757c2cb5c84220221bfd6239f5b0
 }
 
 function hvnd {
     Write-Host "Hugo VSCode Not Draft"
-<<<<<<< HEAD
-    get-hugoreport | Where-Object {$_.FileCode.StartsWith("v") -And (! $_.Draft)} | ft
-=======
     get-hugoreport | Where-Object {$_.FileCode.StartsWith("v") -And (! $_.Draft)} | fFormat-Tablet
->>>>>>> c7c514f79162757c2cb5c84220221bfd6239f5b0
 }
 
 function hhd {
     Write-Host "Hugo Hugo Draft"
-<<<<<<< HEAD
-    get-hugoreport | Where-Object {$_.FileCode.StartsWith("h") -And ($_.Draft)} | ft
-=======
     get-hugoreport | Where-Object {$_.FileCode.StartsWith("h") -And ($_.Draft)} | Format-Table
->>>>>>> c7c514f79162757c2cb5c84220221bfd6239f5b0
 }
 
 function hhnd {
     Write-Host "Hugo Hugo Not Draft"
-<<<<<<< HEAD
-    get-hugoreport | Where-Object {$_.FileCode.StartsWith("h") -And (! $_.Draft)} | ft
-=======
     get-hugoreport | Where-Object {$_.FileCode.StartsWith("h") -And (! $_.Draft)} | Format-Table
->>>>>>> c7c514f79162757c2cb5c84220221bfd6239f5b0
 }
 
 function hpd {
     Write-Host "Hugo Powershell Draft"
-<<<<<<< HEAD
-    get-hugoreport | Where-Object {$_.FileCode.StartsWith("p") -And ($_.Draft)} | ft
-=======
     get-hugoreport | Where-Object {$_.FileCode.StartsWith("p") -And ($_.Draft)} | Format-Table
->>>>>>> c7c514f79162757c2cb5c84220221bfd6239f5b0
 }
 
 function hpnd {
     Write-Host "Hugo Powershell Not Draft"
-<<<<<<< HEAD
-    get-hugoreport | wheWhere-Objectre {$_.FileCode.StartsWith("p") -And (! $_.Draft)} | ft
-=======
     get-hugoreport | Where-Object {$_.FileCode.StartsWith("p") -And (! $_.Draft)} | Format-Table
->>>>>>> c7c514f79162757c2cb5c84220221bfd6239f5b0
 }
 
 function hdd {
     Write-Host "Hugo DevNote Draft"
-<<<<<<< HEAD
-    get-hugoreport | Where-Object {$_.FileCode.StartsWith("d") -And ($_.Draft)} | ft
-=======
     get-hugoreport | Where-Object {$_.FileCode.StartsWith("d") -And ($_.Draft)} | Format-Table
->>>>>>> c7c514f79162757c2cb5c84220221bfd6239f5b0
 }
 
 function hdnd {
     Write-Host "Hugo DevNote Not Draft"
-<<<<<<< HEAD
-    get-hugoreport | Where-Object {$_.FileCode.StartsWith("d") -And (! $_.Draft)} | ft
-}
-
-function hcd {
-    Write-Host "Hugo Code Draft"
-    get-hugoreport | Where-Object {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | ft
-}
-function hcnd {
-    Write-Host "Hugo Code Not Draft"
-    get-hugoreport | Where-Object {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | ft
-}
-=======
     get-hugoreport | Where-Object {$_.FileCode.StartsWith("d") -And (! $_.Draft)} | Format-Table
 }
 
@@ -328,4 +287,3 @@ function hcnd {
      Write-Host "Hugo Code Not Draft"
      get-hugoreport | Where-Object {$_.FileCode.StartsWith("c") -And (! $_.Draft)} | Format-Table
  }
->>>>>>> c7c514f79162757c2cb5c84220221bfd6239f5b0
