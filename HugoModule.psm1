@@ -52,9 +52,9 @@ Function New-HugoPost {
     )
 
     if ($IsMacOS) {
-        Set-Location (Join-Path -path $env:HOME -chilepath $SiteName)
+        Set-Location (Join-Path -path $env:HOME -childpath $SiteName)
     } else {
-        Set-Location (Join-Path -path $env:userprofile -chilepath $SiteName)
+        Set-Location (Join-Path -path $env:userprofile -childpath $SiteName)
     }
 
     if ($title.Contains("/")) {
