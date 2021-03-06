@@ -6,7 +6,7 @@ copy C:\Users\usr0100023\blog\projects\HugoModule\HugoModule.psm1 $targetpath
 dir $targetpath
 #>
 Function Edit-GitConfigure {
-    code "$env:userprofile\.gitconfig"
+    code "$env:userprofile/.gitconfig"
 }
 
 Function New-ModuleFile {
@@ -31,7 +31,11 @@ Function New-ModuleFile {
 
 function Edit-HugoModule {
     $path = "$env:userprofile\Documents\WindowsPowerShell\Modules\HugoModule"
-    code "$path\HugoModule.psm1"
+    if ($IsMacOS) {
+        $path = "$HOME/.local/share/powershell/Modules/hugomodule"
+    }
+
+    code "$path/HugoModule.psm1"
 }
 
 Function New-HugoPost {
