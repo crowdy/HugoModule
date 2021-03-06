@@ -6,7 +6,12 @@ copy C:\Users\usr0100023\blog\projects\HugoModule\HugoModule.psm1 $targetpath
 dir $targetpath
 #>
 Function Edit-GitConfigure {
-    code "$env:userprofile/.gitconfig"
+    $path = "$env:userprofile/.gitconfig"
+    if ($IsMacOS) {
+        $path = "$env:HOME/.gitconfig"
+    }
+
+    code $path
 }
 
 Function New-ModuleFile {
@@ -46,7 +51,11 @@ Function New-HugoPost {
         [string] $SiteName = 'blog'
     )
 
-    Set-Location Join-Path -path $env:userprofile -chilepath $SiteName
+    if ($IsMacOS) {
+        Set-Location (Join-Path -path $env:HOME -chilepath $SiteName)
+    } else {
+        Set-Location (Join-Path -path $env:userprofile -chilepath $SiteName)
+    }
 
     if ($title.Contains("/")) {
         $index = $title.IndexOf('/')
@@ -106,9 +115,12 @@ Function Get-HugoPost {
         [string] $SiteName = 'blog'
     )
 
-    Set-Location $env:userprofile\$SiteName\content\ko
+    $path = "$env:userprofile\$SiteName\content\ko"
+    if ($IsMacOS) {
+        $env:HOME/$SiteName/content/ko
+    }
 
-    $files = Get-ChildItem -Path $env:userprofile\$SiteName\content\ko -Include *.md -Recurse
+    $files = Get-ChildItem -Path $path -Include *.md -Recurse
     
     # $files.Count
     # $files | ft -Property DirectoryName, Name
